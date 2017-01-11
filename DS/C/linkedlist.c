@@ -60,6 +60,61 @@ void insert_last(struct node** head, int data)
 	p->next = new_node;
 }
 
+// delete - delete a given node (key) from the list
+void delete(struct node** head, int key)
+{
+	// find the node previous to the key
+	struct node* prev = *head;
+	
+	// check if head node itself has the key
+	if (prev->item == key) {
+		*head = prev->next;
+		free(head);
+		return;
+	}
+	
+	while ((prev->next) != NULL && (prev->next)->item != key) {
+		prev = prev-> next;
+	}
+	struct node* temp = prev->next;
+	// now prev is the node previous to the one to be deleted
+	// change prev's next pointer to point to the next of the
+	// one to be deleted
+	
+	if (temp == NULL) { // didn't find a node with the key
+		printf("Key %d not found in the list...\n", key);
+		return;
+	}
+	prev->next = (temp)->next;
+	free(temp);
+	return;	
+}
+
+// delete_at - delete a node at a given position (integer) in the list
+void delete_at(struct node** head, int pos)
+{
+	int p = 0;
+	
+	if (pos == 0) {
+		struct node* old_head = *head;
+		*head = old_head->next;
+		free(old_head);
+		return;
+	}
+	// traverse the list to find the node in the 
+	// previous position to the one to be deleted
+	struct node* n = *head;
+	while (n->next != NULL) {
+		p++;
+		n = n->next;
+		if (p == pos) {
+			delete(head, n->item);
+			return;
+		}
+	}
+	printf("Position %d not found in the list...\n", pos);
+}
+
 // printlist - to print the list
 void printlist (struct node* p)
 {
@@ -67,7 +122,7 @@ void printlist (struct node* p)
 		printf("%d --> ", p->item);
 		p = p->next;
 	}
-	printf(" NULL\n");
+	printf(" NULL\n\n");
 }
 
 // main
@@ -111,6 +166,30 @@ int main()
 	printf("Inserting 5 at the end...\n");
 	
 	insert_last(&head, 5);
+	
+	printlist(head);
+	
+	printf("Deleting 3 from the list...\n");
+	
+	delete(&head, 3);
+	
+	printlist(head);
+
+	printf("Deleting 6 from the list...\n");
+	
+	delete(&head, 6);
+	
+	printlist(head);
+	
+	printf("Deleting at position 2...\n");
+	
+	delete_at(&head, 2);
+	
+	printlist(head);
+
+	printf("Deleting at position 7...\n");
+	
+	delete_at(&head, 7);
 	
 	printlist(head);
 	
