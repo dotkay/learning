@@ -1,6 +1,12 @@
 #include <iostream>
 #include <stdio.h>
 
+/*
+    Problem: Given an array, find the maximum subarray sum:
+            i.e, the sum of contiguous elements in an array
+            that leads to maximum sum
+*/
+
 using namespace std;
 
 #define REP(i, a, n) for (int i = a; i <= n; i++)
