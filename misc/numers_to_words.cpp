@@ -1,3 +1,11 @@
+/**
+Given a number from 1 to 4 (inclusive), return a word representation of the number. For example, given 2, return two. If the number is greater than 4, return the phrase too large. If the number is less than 1, return the phrase too small.
+
+The input starts with N, the number of cases.
+N lines follow, which each contains 1 integer.
+Print out the correct phrase for each case on its own line.
+**/
+
 #include <iostream>
 #include <string>
 #include <vector>
