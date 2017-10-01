@@ -25,6 +25,7 @@ public:
   void dfs_preorder_r(Node* root);
   void dfs_inorder(Node* root);
   void dfs_inorder_r(Node* root);
+  void dfs_postorder(Node* root);
   void dfs_postorder_r(Node* root);
 };
 
@@ -246,7 +247,49 @@ void Node::dfs_inorder_r(Node* root) {
   dfs_inorder_r(root->right);
 }
 
+void Node::dfs_postorder(Node* root) {
+  bool done = false;
+  
+  if (root == NULL)
+    return;
 
+  stack<Node*> S;
+  Node* curr = root;
+
+  while (!done) {
+
+    // go all the way to the right most node in
+    // the tree (right subtree) recording the nodes
+    // on the way, in our stack
+    if (curr != NULL) {
+      S.push(curr);
+      curr = curr->right;
+    }
+
+    else {
+      if (!S.empty()) {
+        curr = S.top();
+        S.pop();
+        cout << curr->data << " ";
+        curr = curr->left;
+      }
+      else {
+        done = true;
+        return;
+      }
+    }
+  }
+}
+
+void Node::dfs_postorder_r(Node* root) {
+
+  if (root == NULL)
+    return;
+  
+  dfs_postorder_r(root->right);
+  cout << root->data << " ";
+  dfs_postorder_r(root->left);
+}
 
 
 int main() {
@@ -270,5 +313,9 @@ int main() {
   n.dfs_inorder_r(bst);
   cout << "\n";
   n.dfs_inorder(bst);
+  cout << "\n";
+  n.dfs_postorder_r(bst);
+  cout << "\n";
+  n.dfs_postorder(bst);
   return 0;
 }
