@@ -21,6 +21,7 @@ public:
   int find_min_r(Node* root);
   int find_height_r(Node* root);
   void bfs(Node* root);
+  void reverse_bfs(Node* root);
   void dfs_preorder(Node* root);
   void dfs_preorder_r(Node* root);
   void dfs_inorder(Node* root);
@@ -148,7 +149,40 @@ void Node::bfs(Node* root) {
     // printed it and pushed its children
     Q.pop();
   }
+}
 
+// reverse bfs (start from the level towards the leaf
+// and print the nodes level-by-level).
+// reverse level-order traversal.
+void Node::reverse_bfs(Node* root) {
+  queue<Node*> Q;
+  stack<Node*> S;
+
+  // check if the tree is empty
+  if (root == NULL) {
+    cout << "Empty tree. Nothing to traverse.";
+    return;
+  }
+
+  // first let us push the root node into the Q
+  Q.push(root);
+
+  while (!Q.empty()) {
+    root = Q.front();
+    Q.pop();
+    S.push(root);
+
+    if (root->right != NULL)
+      Q.push(root->right);
+    if (root->left != NULL)
+      Q.push(root->left);
+  }
+
+  while (!S.empty()) {
+    root = S.top();
+    cout << root->data << " ";
+    S.pop();
+  }
 }
 
 // depth-first-search(bfs)  
@@ -303,6 +337,8 @@ int main() {
   n.insert_node(&bst, 4);
   n.insert_node(&bst, 6);
   n.bfs(bst);
+  cout << "\n";
+  n.reverse_bfs(bst);
   cout << "\n";
   n.dfs_preorder_r(bst);
   cout << "\n";
