@@ -15,9 +15,17 @@ void print_list (list<int> *lst, int start) {
   cout << "]\n";
 }
 
+void print_vec (vector<int> v) {
+  cout << "Distance \t [ ";
+  for (int i=0; i<v.size(); i++)
+    cout << v[i] << " ";
+  cout << "]\n";
+}
+
 class Graph {
   int v;           // no. of vertices in the graph
   list<int> *adj;  // adjacency list
+  vector<int> distance;
   public:
     Graph (int v);
     void add_edge (int p, int q);
@@ -28,6 +36,7 @@ class Graph {
 Graph::Graph (int v) {
   this->v = v;
   adj = new list<int>[v];
+  distance = vector<int>(v);
 }
 
 void Graph::add_edge (int p, int q) {
@@ -52,8 +61,10 @@ void Graph::BFS (int start) {
   list<int>::iterator i;
 
   // initialize
-  for (int i=0; i<v; i++)
+  for (int i=0; i<v; i++) {
     visited[i] = false;
+    distance[i] = 0;    
+  }
 
   // push the starting node
   // colour it, update the distance
@@ -66,13 +77,14 @@ void Graph::BFS (int start) {
     start = q.front();
     cout << start << " ";
     print_list (adj, start);
-
+    print_vec (distance);
     q.pop();
 
     for (i = adj[start].begin(); i!=adj[start].end(); i++) {
       if (!visited[*i]) {
         // enqueue it to traverse its children
         visited[*i] = true;
+        distance[*i] = distance[start]+1;
         q.emplace(*i);
       }
     }
@@ -80,6 +92,7 @@ void Graph::BFS (int start) {
 }
 
 int main () {
+
 
   Graph g(4);
   g.add_edge(0, 1);
@@ -90,5 +103,18 @@ int main () {
   g.add_edge(3, 3);
 
   g.BFS(2);
+
+  Graph g2(6);
+  g2.add_edge(0, 1);
+  g2.add_edge(0, 2);
+  g2.add_edge(1, 3);
+  g2.add_edge(1, 4);
+  g2.add_edge(2, 4);
+  g2.add_edge(3, 4);
+  g2.add_edge(3, 5);
+  g2.add_edge(4, 5);
+
+  g2.BFS(0);
+
   return 0;
 }
