@@ -48,19 +48,22 @@ void Queue::enqueue (int item) {
 }
 
 int Queue::dequeue () {
+  int res;
   // check if the queue is empty
   if (front == NULL)
     throw out_of_range("Empty queue");
   
-  Node *enqueue_item = front;
+  Node *dequeue_item = front;
+  res = front->data;
   front = front->next;
 
   // now, if there was only one node
   // to pop front would point to NULL
   if (front == NULL)
     rear = NULL;
-  
-  return enqueue_item->data;
+
+  delete (dequeue_item);
+  return res;
 }
 
 bool Queue::is_empty () {
