@@ -30,6 +30,7 @@ class List
     Node* get_head();
     void print_list(Node* head);
     void print_list_r(Node* head);
+    Node* reverse_list(Node*head);
 };
 
 List::List()
@@ -76,6 +77,23 @@ Node* List::get_head()
   return (this->head);
 }
 
+// reverse the list (iterative)
+Node* List::reverse_list(Node* head)
+{
+  Node* prev = NULL;
+  Node* curr = head;
+  Node* next;    
+  while (curr != NULL)
+  {
+    next = curr->next;
+    curr->next = prev;
+    prev = curr;
+    curr = next;
+  }
+  head = prev;
+  return head;
+}
+
 // prints the list
 void List::print_list(Node* head)
 {
@@ -113,5 +131,7 @@ int main()
   l->tail_insert(5);
   l->print_list(l->get_head());
   l->print_list_r(l->get_head());
+  l->print_list(l->reverse_list(l->get_head()));
+
   return 0;
 }
