@@ -29,6 +29,7 @@ class List
     int get_size();
     Node* get_head();
     void print_list(Node* head);
+    void print_list_r(Node* head);
 };
 
 List::List()
@@ -88,6 +89,19 @@ void List::print_list(Node* head)
   free(tmp);
 }
 
+// prints the list (recursive)
+void List::print_list_r(Node* head)
+{
+  Node* tmp = head;
+  if (tmp == NULL)
+  {
+    std::cout << "NULL" << std::endl;
+    return;
+  }
+  std::cout << tmp->data << " -> ";
+  print_list_r(tmp->next);
+}
+
 int main()
 {
   List* l = new List();
@@ -98,6 +112,6 @@ int main()
   l->print_list(l->get_head());
   l->tail_insert(5);
   l->print_list(l->get_head());
-
+  l->print_list_r(l->get_head());
   return 0;
 }
