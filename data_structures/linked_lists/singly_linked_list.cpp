@@ -33,6 +33,10 @@ class List
     void print_list_r(Node* head);
     Node* reverse_list(Node* head);
     Node* reverse_list_r(Node* head);
+    Node* reverse_list_tr(Node* head);
+
+  private: // helper functions
+    Node* reverse_list_trh(Node* head, Node* acc);
 };
 
 List::List()
@@ -115,6 +119,27 @@ Node* List::reverse_list_r(Node* head)
   return tmp;
 }
 
+// helper function (tail recursive list reversal)
+Node* List::reverse_list_trh(Node* head, Node* acc)
+{
+  // acc accumulates whatever is seen as 
+  // we recursively traverse until NULL is encountered
+  
+  // base case
+  if (head == NULL)
+    return acc;
+  
+  // recursion
+  Node* rest = head->next; // capture the rest of the list
+  head->next = acc; // reverse the pointer from the head
+  return reverse_list_trh(head, acc);
+}
+
+// reverse the list (tail recursive)
+Node* List::reverse_list_tr(Node* head)
+{
+  return reverse_list_trh(head, NULL);
+}
 
 // prints the list
 void List::print_list(Node* head)
@@ -159,6 +184,9 @@ int main()
 
   std::cout << "reversing the list again ... " << std::endl;
   l->print_list(l->reverse_list_r(l->get_head()));
+
+  std::cout << "reversing the list again ... " << std::endl;
+  l->print_list(l->reverse_list_tr(l->get_head()));
 
   return 0;
 }
