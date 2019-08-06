@@ -28,9 +28,11 @@ class List
     void tail_insert(int item);
     int get_size();
     Node* get_head();
+    int get_head_data();
     void print_list(Node* head);
     void print_list_r(Node* head);
-    Node* reverse_list(Node*head);
+    Node* reverse_list(Node* head);
+    Node* reverse_list_r(Node* head);
 };
 
 List::List()
@@ -77,22 +79,42 @@ Node* List::get_head()
   return (this->head);
 }
 
+// fetch the data in the head
+int List::get_head_data()
+{
+  Node* hd = get_head();
+  return hd->data;
+}
+
 // reverse the list (iterative)
 Node* List::reverse_list(Node* head)
 {
+  Node* rest;
   Node* prev = NULL;
-  Node* curr = head;
-  Node* next;    
-  while (curr != NULL)
+
+  while (head != NULL)
   {
-    next = curr->next;
-    curr->next = prev;
-    prev = curr;
-    curr = next;
+    rest = head->next;
+    head->next = prev;
+    prev = head;
+    head = rest;
   }
-  head = prev;
-  return head;
+  return prev;
 }
+
+// reverse the list (recursive)
+Node* List::reverse_list_r(Node* head)
+{
+  // base case
+  if (head == NULL || head->next == NULL)
+    return head;
+  // recursion
+  Node* tmp = reverse_list_r(head->next);
+  head->next->next = head; // reverse the pointers
+  head->next = NULL;
+  return tmp;
+}
+
 
 // prints the list
 void List::print_list(Node* head)
@@ -104,7 +126,7 @@ void List::print_list(Node* head)
     tmp = tmp->next;
   }
   std::cout << "NULL" << std::endl;
-  free(tmp);
+  this->head = head;
 }
 
 // prints the list (recursive)
@@ -118,6 +140,7 @@ void List::print_list_r(Node* head)
   }
   std::cout << tmp->data << " -> ";
   print_list_r(tmp->next);
+  this->head = head;
 }
 
 int main()
@@ -128,10 +151,14 @@ int main()
   l->insert_item(3);
   l->insert_item(4);
   l->print_list(l->get_head());
-  l->tail_insert(5);
-  l->print_list(l->get_head());
-  l->print_list_r(l->get_head());
-  l->print_list(l->reverse_list(l->get_head()));
+
+  std::cout << "reversing the list ... " << std::endl;
+  l->print_list_r(l->reverse_list(l->get_head()));
+  
+  std::cout << "head data: " << l->get_head_data() << std::endl;
+
+  std::cout << "reversing the list again ... " << std::endl;
+  l->print_list(l->reverse_list_r(l->get_head()));
 
   return 0;
 }
